@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>القرآن الكريم - Quran Shareef</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Sans+Devanagari:wght@400;600&family=Tiro+Devanagari+Hindi:wght@400&family=Cormorant+Garamond:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cream: #F5F1E8;
+            --gold: #D4AF37;
+            --dark-green: #1B4332;
+            --deep-green: #081C15;
+            --accent-teal: #2D6A4F;
+            --light-gold: #F4E5C2;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            background: linear-gradient(135deg, var(--deep-green) 0%, var(--dark-green) 50%, var(--accent-teal) 100%);
+            min-height: 100vh;
+            color: var(--cream);
+            overflow-x: hidden;
+        }
+
+        /* Decorative Background Pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(212, 175, 55, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Login Page Styles */
+        .login-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            background: linear-gradient(135deg, var(--deep-green) 0%, var(--dark-green) 50%, var(--accent-teal) 100%);
+            animation: fadeIn 0.6s ease-out;
+            overflow: hidden;
+        }
+
+        /* Animated Mosque Background */
+        .mosque-background {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 70%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Multiple Mosques Container */
+        .mosque-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .mosque-silhouette {
+            position: absolute;
+            bottom: 0;
+            opacity: 0.12;
+        }
+
+        /* Center Large Mosque */
+        .mosque-center {
+            left: 50%;
+            transform: translateX(-50%) scale(1.2);
+            z-index: 3;
+        }
+
+        /* Left Mosque */
+        .mosque-left {
+            left: 10%;
+            transform: scale(0.9);
+            z-index: 2;
+            opacity: 0.1;
+        }
+
+        /* Right Mosque */
+        .mosque-right {
+            right: 10%;
+            transform: scale(0.9);
+            z-index: 2;
+            opacity: 0.1;
+        }
+
+        /* Far Left Small Mosque */
+        .mosque-far-left {
+            left: -5%;
+            transform: scale(0.6);
+            z-index: 1;
+            opacity: 0.08;
+        }
+
+        /* Far Right Small Mosque */
+        .mosque-far-right {
+            right: -5%;
+            transform: scale(0.6);
+            z-index: 1;
+            opacity: 0.08;
+        }
+
+        /* Main Dome */
+        .dome {
+            position: absolute;
+            bottom: 150px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 100px;
+            background: var(--gold);
+            border-radius: 50% 50% 0 0;
+            animation: glow 3s ease-in-out infinite;
+        }
+
+        .dome::after {
+            content: '☪';
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 35px;
+            color: var(--gold);
+            animation: rotate 10s linear infinite;
+        }
+
+        /* Minarets */
+        .minaret {
+            position: absolute;
+            bottom: 0;
+            width: 60px;
+            height: 300px;
+            background: linear-gradient(180deg, var(--gold) 0%, rgba(212, 175, 55, 0.6) 100%);
+            border-radius: 30px 30px 0 0;
+        }
+
+        .minaret-left {
+            left: 20px;
+            animation: slideUp 2s ease-out;
+        }
+
+        .minaret-right {
+            right: 20px;
+            animation: slideUp 2s ease-out 0.2s;
+            animation-fill-mode: both;
+        }
+
+        .minaret-top {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 40px;
+            background: var(--gold);
+            border-radius: 50%;
+        }
+
+        .minaret-top::after {
+            content: '☪';
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 20px;
+            color: var(--gold);
+            animation: rotate 8s linear infinite;
+        }
+
+        /* Allah Text in Arabic */
+        .allah-text {
+            position: absolute;
+            font-family: 'Amiri', serif;
+            color: var(--gold);
+            font-size: 120px;
+            font-weight: 700;
+            opacity: 0.08;
+            pointer-events: none;
+            animation: float 6s ease-in-out infinite;
+            text-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+        }
+
+        .allah-1 {
+            top: 15%;
+            left: 15%;
+            animation-delay: 0s;
+        }
+
+        .allah-2 {
+            top: 25%;
+            right: 12%;
+            animation-delay: 2s;
+            font-size: 100px;
+        }
+
+        .allah-3 {
+            top: 45%;
+            left: 8%;
+            animation-delay: 4s;
+            font-size: 90px;
+        }
+
+        .allah-4 {
+            top: 40%;
+            right: 5%;
+            animation-delay: 3s;
+            font-size: 85px;
+        }
+
+        .allah-5 {
+            top: 8%;
+            left: 45%;
+            animation-delay: 1s;
+            font-size: 95px;
+        }
+
+        /* Stars */
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .star {
+            position: absolute;
+            background: var(--gold);
+            width: 2px;
+            height: 2px;
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--gold);
+            animation: twinkle 3s ease-in-out infinite;
+        }
+
+        .star:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; }
+        .star:nth-child(2) { top: 30%; left: 20%; animation-delay: 0.5s; }
+        .star:nth-child(3) { top: 15%; left: 80%; animation-delay: 1s; }
+        .star:nth-child(4) { top: 40%; left: 70%; animation-delay: 1.5s; }
+        .star:nth-child(5) { top: 25%; left: 50%; animation-delay: 2s; }
+        .star:nth-child(6) { top: 35%; left: 30%; animation-delay: 2.5s; }
+        .star:nth-child(7) { top: 10%; left: 60%; animation-delay: 0.8s; }
+        .star:nth-child(8) { top: 45%; left: 15%; animation-delay: 1.8s; }
+        .star:nth-child(9) { top: 12%; left: 85%; animation-delay: 1.2s; }
+        .star:nth-child(10) { top: 38%; left: 90%; animation-delay: 2.2s; }
+
+        @keyframes glow {
+            0%, 100% { opacity: 0.12; }
+            50% { opacity: 0.2; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes rotate {
+            from { transform: translateX(-50%) rotate(0deg); }
+            to { transform: translateX(-50%) rotate(360deg); }
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        .login-box {
+            background: rgba(27, 67, 50, 0.95);
+            border: 2px solid var(--gold);
+            border-radius: 20px;
+            padding: 60px 50px;
+            max-width: 450px;
+            width: 90%;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(212, 175, 55, 0.2);
+            position: relative;
+            z-index: 10;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        .login-box::before {
+            content: '☪';
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 45px;
+            color: var(--gold);
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+        }
+
+        .login-title {
+            text-align: center;
+            margin-bottom: 40px;
+            margin-top: 50px;
+        }
+
+        .login-title h1 {
+            font-family: 'Amiri', serif;
+            font-size: 42px;
+            color: var(--gold);
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .login-title p {
+            font-size: 18px;
+            color: var(--light-gold);
+            opacity: 0.9;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--light-gold);
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px 20px;
+            background: rgba(245, 241, 232, 0.1);
+            border: 1px solid var(--gold);
+            border-radius: 10px;
+            color: var(--cream);
+            font-size: 16px;
+            font-family: 'Cormorant Garamond', serif;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            background: rgba(245, 241, 232, 0.15);
+            border-color: var(--light-gold);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+        }
+
+        .form-group input::placeholder {
+            color: rgba(245, 241, 232, 0.5);
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--gold) 0%, #C4941F 100%);
+            border: none;
+            border-radius: 10px;
+            color: var(--deep-green);
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 10px;
+        }
+
+        .login-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.3);
+        }
+
+        .login-button:active {
+            transform: translateY(0);
+        }
+
+        .error-message {
+            color: #ff6b6b;
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+            display: none;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            display: none;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(180deg, rgba(27, 67, 50, 0.9) 0%, transparent 100%);
+            position: relative;
+        }
+
+        .header h1 {
+            font-family: 'Amiri', serif;
+            font-size: 48px;
+            color: var(--gold);
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(212, 175, 55, 0.3);
+        }
+
+        .header p {
+            font-size: 20px;
+            color: var(--light-gold);
+            opacity: 0.9;
+        }
+
+        .logout-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 25px;
+            background: rgba(212, 175, 55, 0.2);
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            color: var(--gold);
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .logout-button:hover {
+            background: rgba(212, 175, 55, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .juz-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: rgba(27, 67, 50, 0.6);
+            border-radius: 20px;
+            border: 1px solid var(--gold);
+        }
+
+        .juz-button {
+            padding: 12px 24px;
+            background: rgba(212, 175, 55, 0.1);
+            border: 2px solid var(--gold);
+            border-radius: 10px;
+            color: var(--gold);
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            min-width: 80px;
+        }
+
+        .juz-button:hover {
+            background: rgba(212, 175, 55, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2);
+        }
+
+        .juz-button.active {
+            background: var(--gold);
+            color: var(--deep-green);
+            font-weight: 700;
+        }
+
+        .content-area {
+            background: rgba(27, 67, 50, 0.7);
+            border-radius: 20px;
+            padding: 50px;
+            border: 2px solid var(--gold);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            min-height: 500px;
+        }
+
+        .surah-header {
+            text-align: center;
+            padding: 30px;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border: 1px solid var(--gold);
+        }
+
+        .surah-name {
+            font-family: 'Amiri', serif;
+            font-size: 36px;
+            color: var(--gold);
+            margin-bottom: 10px;
+        }
+
+        .surah-info {
+            font-size: 18px;
+            color: var(--light-gold);
+            opacity: 0.9;
+        }
+
+        .verse-container {
+            margin-bottom: 40px;
+            padding: 30px;
+            background: rgba(245, 241, 232, 0.05);
+            border-radius: 15px;
+            border-left: 4px solid var(--gold);
+            transition: all 0.3s ease;
+        }
+
+        .verse-container:hover {
+            background: rgba(245, 241, 232, 0.08);
+            transform: translateX(5px);
+        }
+
+        .verse-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 45px;
+            height: 45px;
+            background: var(--gold);
+            color: var(--deep-green);
+            border-radius: 50%;
+            font-weight: 700;
+            margin-bottom: 15px;
+            font-size: 16px;
+            padding: 0 10px;
+        }
+
+        .arabic-text {
+            font-family: 'Amiri', serif;
+            font-size: 32px;
+            line-height: 2.2;
+            text-align: right;
+            direction: rtl;
+            color: var(--cream);
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+
+        .transliteration-text {
+            font-family: Arial, 'Helvetica Neue', sans-serif;
+            font-size: 24px;
+            line-height: 1.8;
+            color: var(--light-gold);
+            text-align: left;
+            opacity: 0.98;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .bismillah {
+            text-align: center;
+            font-family: 'Amiri', serif;
+            font-size: 42px;
+            color: var(--gold);
+            margin-bottom: 40px;
+            padding: 20px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px;
+            font-size: 24px;
+            color: var(--gold);
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(212, 175, 55, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--gold);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .error-display {
+            text-align: center;
+            padding: 40px;
+            color: #ff6b6b;
+            font-size: 18px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 32px;
+            }
+
+            .login-box {
+                padding: 40px 30px;
+            }
+
+            .content-area {
+                padding: 25px;
+            }
+
+            .arabic-text {
+                font-size: 24px;
+            }
+
+            .transliteration-text {
+                font-size: 20px;
+            }
+
+            .juz-selector {
+                padding: 20px;
+            }
+
+            .logout-button {
+                position: relative;
+                top: auto;
+                right: auto;
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div class="login-container" id="loginPage">
+        <!-- Animated Stars Background -->
+        <div class="stars">
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+        </div>
+
+        <!-- Allah Text in Arabic -->
+        <div class="allah-text allah-1">الله</div>
+        <div class="allah-text allah-2">الله</div>
+        <div class="allah-text allah-3">الله</div>
+        <div class="allah-text allah-4">الله</div>
+        <div class="allah-text allah-5">الله</div>
+
+        <!-- Multiple Animated Mosques -->
+        <div class="mosque-background">
+            <div class="mosque-container">
+                <!-- Far Left Mosque -->
+                <div class="mosque-silhouette mosque-far-left">
+                    <div class="minaret minaret-left">
+                        <div class="minaret-top"></div>
+                    </div>
+                    <div class="dome"></div>
+                    <div class="minaret minaret-right">
+                        <div class="minaret-top"></div>
+                    </div>
+                </div>
+
+                <!-- Left Mosque -->
+                <div class="mosque-silhouette mosque-left">
+                    <div class="minaret minaret-left">
+                        <div class="minaret-top"></div>
+                    </div>
+                    <div class="dome"></div>
+                    <div class="minaret minaret-right">
+                        <div class="minaret-top"></div>
+                    </div>
+                </div>
+
+                <!-- Center Main Mosque -->
+                <div class="mosque-silhouette mosque-center">
+                    <div class="minaret minaret-left">
+                        <div class="minaret-top"></div>
+                    </div>
+                    <div class="dome"></div>
+                    <div class="minaret minaret-right">
+                        <div class="minaret-top"></div>
+                    </div>
+                </div>
+
+                <!-- Right Mosque -->
+                <div class="mosque-silhouette mosque-right">
+                    <div class="minaret minaret-left">
+                        <div class="minaret-top"></div>
+                    </div>
+                    <div class="dome"></div>
+                    <div class="minaret minaret-right">
+                        <div class="minaret-top"></div>
+                    </div>
+                </div>
+
+                <!-- Far Right Mosque -->
+                <div class="mosque-silhouette mosque-far-right">
+                    <div class="minaret minaret-left">
+                        <div class="minaret-top"></div>
+                    </div>
+                    <div class="dome"></div>
+                    <div class="minaret minaret-right">
+                        <div class="minaret-top"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="login-box">
+            <div class="login-title">
+                <h1>القرآن الكريم</h1>
+                <p>Quran Shareef</p>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="userid">User ID</label>
+                    <input type="text" id="userid" placeholder="Enter User ID" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter Password" required>
+                </div>
+                <button type="submit" class="login-button">Enter</button>
+                <p class="error-message" id="errorMessage">Invalid credentials. Please try again.</p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <div class="header">
+            <h1>القرآن الكريم</h1>
+            <p>Read the Holy Quran - Complete 30 Paras with English Pronunciation</p>
+            <button class="logout-button" onclick="logout()">Logout</button>
+        </div>
+
+        <div class="container">
+            <div class="juz-selector" id="juzSelector">
+                <!-- Juz buttons will be generated here -->
+            </div>
+
+            <div class="content-area" id="contentArea">
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <p style="margin-top: 20px;">Please select a Para to begin reading</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Login credentials
+        const VALID_USERID = 'mosque';
+        const VALID_PASSWORD = 'namaj';
+
+        // Quran API endpoints - Using Quran.com API which has better transliteration
+        const API_BASE_URL = 'https://api.quran.com/api/v4';
+        
+        // Cache for API responses
+        let quranCache = {};
+        let currentJuz = null;
+
+        // Login functionality
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const userid = document.getElementById('userid').value;
+            const password = document.getElementById('password').value;
+            
+            if (userid === VALID_USERID && password === VALID_PASSWORD) {
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+                initializeQuranReader();
+            } else {
+                document.getElementById('errorMessage').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('errorMessage').style.display = 'none';
+                }, 3000);
+            }
+        });
+
+        // Logout functionality
+        function logout() {
+            document.getElementById('mainContent').style.display = 'none';
+            document.getElementById('loginPage').style.display = 'flex';
+            document.getElementById('userid').value = '';
+            document.getElementById('password').value = '';
+        }
+
+        // Initialize Quran Reader
+        function initializeQuranReader() {
+            const juzSelector = document.getElementById('juzSelector');
+            juzSelector.innerHTML = '';
+            
+            // Create Juz buttons
+            for (let i = 1; i <= 30; i++) {
+                const button = document.createElement('button');
+                button.className = 'juz-button';
+                button.textContent = `Para ${i}`;
+                button.setAttribute('data-juz', i);
+                button.onclick = () => loadJuz(i);
+                juzSelector.appendChild(button);
+            }
+        }
+
+        // Load Juz content
+        async function loadJuz(juzNumber) {
+            // Update active button
+            document.querySelectorAll('.juz-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-juz="${juzNumber}"]`).classList.add('active');
+
+            const contentArea = document.getElementById('contentArea');
+            contentArea.innerHTML = '<div class="loading"><div class="loading-spinner"></div><p style="margin-top: 20px;">Loading Para ' + juzNumber + '...</p></div>';
+            contentArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            currentJuz = juzNumber;
+
+            try {
+                // Fetch Arabic text
+                const arabicResp = await fetch(`https://api.alquran.cloud/v1/juz/${juzNumber}/ar.alafasy`);
+                // Fetch English transliteration  
+                const translitResp = await fetch(`https://api.alquran.cloud/v1/juz/${juzNumber}/en.transliteration`);
+                
+                if (!arabicResp.ok || !translitResp.ok) {
+                    throw new Error('Failed to load Quran data');
+                }
+
+                const arabicData = await arabicResp.json();
+                const translitData = await translitResp.json();
+                
+                if (arabicData.code !== 200 || translitData.code !== 200) {
+                    throw new Error('Invalid API response');
+                }
+
+                // Combine data
+                const verses = arabicData.data.ayahs.map((ayah, idx) => ({
+                    verse_key: `${ayah.surah.number}:${ayah.numberInSurah}`,
+                    verse_number: ayah.numberInSurah,
+                    text_uthmani: ayah.text,
+                    transliteration: translitData.data.ayahs[idx]?.text || '',
+                    surah: {
+                        number: ayah.surah.number,
+                        name_arabic: ayah.surah.name,
+                        name_simple: ayah.surah.englishName
+                    }
+                }));
+
+                displayJuz(verses, juzNumber);
+
+            } catch (error) {
+                console.error('Error loading Juz:', error);
+                contentArea.innerHTML = `
+                    <div class="error-display">
+                        <p>Error loading Para ${juzNumber}</p>
+                        <p style="font-size: 16px; margin-top: 10px; color: var(--light-gold);">Please check your internet connection and try again.</p>
+                        <button class="juz-button" onclick="loadJuz(${juzNumber})" style="margin-top: 20px;">Retry</button>
+                    </div>
+                `;
+            }
+        }
+
+        // Display Juz content
+        function displayJuz(verses, juzNumber) {
+            const contentArea = document.getElementById('contentArea');
+            let html = '';
+
+            // Group verses by Surah
+            const surahGroups = {};
+            verses.forEach(verse => {
+                const surahNum = verse.surah?.number || parseInt(verse.verse_key.split(':')[0]);
+                
+                if (!surahGroups[surahNum]) {
+                    surahGroups[surahNum] = {
+                        name: verse.surah?.name_simple || 'Surah ' + surahNum,
+                        arabicName: verse.surah?.name_arabic || '',
+                        verses: []
+                    };
+                }
+                surahGroups[surahNum].verses.push(verse);
+            });
+
+            // Display each Surah
+            Object.keys(surahGroups).forEach((surahNum, index) => {
+                const surah = surahGroups[surahNum];
+                
+                html += `
+                    <div class="surah-header">
+                        <div class="surah-name">${surah.arabicName || surah.name}</div>
+                        <div class="surah-info">${surah.name}</div>
+                    </div>
+                `;
+
+                // Add Bismillah for all surahs except At-Tawbah (Surah 9) and if starting from verse 1
+                if (surahNum != 9 && surah.verses[0].verse_number === 1 && index > 0) {
+                    html += `<div class="bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>`;
+                }
+
+                // Display verses
+                surah.verses.forEach(verse => {
+                    const arabicText = verse.text_uthmani || verse.text_uthmani;
+                    const transliteration = verse.transliteration || verse.translations?.[0]?.text || '';
+                    
+                    html += `
+                        <div class="verse-container">
+                            <div class="verse-number">${verse.verse_number}</div>
+                            <div class="arabic-text">${arabicText}</div>
+                            <div class="transliteration-text">${transliteration}</div>
+                        </div>
+                    `;
+                });
+            });
+
+            contentArea.innerHTML = html;
+        }
+
+        // Prevent back button after logout
+        window.addEventListener('popstate', function(event) {
+            if (document.getElementById('mainContent').style.display === 'block') {
+                history.pushState(null, null, location.href);
+            }
+        });
+
+        history.pushState(null, null, location.href);
+    </script>
+</body>
+</html>
